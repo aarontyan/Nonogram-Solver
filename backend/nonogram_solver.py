@@ -3,10 +3,8 @@ import heapq as hq
 from typing import Optional
 
 
-class Board:
+class Nonogram:
     def __init__(self, rows: int, cols: int, row_vals: list, col_vals: list):
-        self.ROW_VALS = row_vals
-        self.COL_VALS = col_vals
         self.num_rows = rows
         self.num_cols = cols
         self.row_len = self.num_cols
@@ -18,7 +16,7 @@ class Board:
             self.row_possibilities.append(self.generate_possibilities(row, True))
         for col in col_vals:
             self.col_possibilities.append(self.generate_possibilities(col, False))
-
+        self.board = [[0 for _ in range(self.num_rows)] for _ in range(self.num_cols)]
         # subtract by 1 everytime a row or col possiblity reaches length 1, when 0 it's finished
         self.solves_needed = rows + cols
         # index corrosponds to which row/col, list at that place corresponds to which spot to change
@@ -32,6 +30,8 @@ class Board:
         self.col_solved = [False for _ in range(self.num_cols)]
         # Set to true if the puzzle is impossible to solve
         self.impossible = False
+        self.board_change = []
+        self.board_change.append(self.board)
         self.solve_board()
 
     # solves the board
@@ -82,7 +82,7 @@ class Board:
 
         while heap and self.solves_needed > 0:
             # if row is true, we are currently looking at the changes to be made to a row (changes are column indexes)
-            num_changes, idx, row, changes = hq.heappop(heap)
+            _, idx, row, changes = hq.heappop(heap)
             changes = list(changes)
             i = 0
             completed = False
@@ -166,7 +166,7 @@ class Board:
         return res
 
     # helper function to generate every possible position for a given value list
-    def generate_possibilities(self, vals: list, row: bool):
+    def generate_possibilities(self, vals: list, row: bool) -> list:
         res = []
         size = self.row_len if row else self.col_len
 
