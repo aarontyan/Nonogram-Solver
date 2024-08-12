@@ -1,5 +1,5 @@
 import React from 'react';
-import './Grid.css'; // Import the CSS file
+import './Grid.css'
 
 interface GridProps {
     numRows: number;
@@ -7,7 +7,7 @@ interface GridProps {
 }
 
 const Grid: React.FC<GridProps> = ({ numRows, numCols }) => {
-    const containerSize = window.innerWidth * 0.4
+    const containerSize = window.innerWidth * 0.42
     // Calculate the size of each cell
     const cellWidth = containerSize / numCols;
     const cellHeight = containerSize / numRows;

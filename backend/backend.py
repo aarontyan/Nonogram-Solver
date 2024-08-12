@@ -27,6 +27,5 @@ def solve_nonogram():
 def read_nonogram():
     print("hi")
 
-
 if __name__ == "__main__":
     app.run(host="localhost", port=5000)

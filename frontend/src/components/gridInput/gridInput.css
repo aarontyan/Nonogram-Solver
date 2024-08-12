@@ -2,18 +2,18 @@
 .input-container {
     display: flex;
     align-items: center;
-    margin-bottom: 2vh; /* Space between input and grid */
+    margin-top: -7vh;
 }
 
 .input {
-    margin: 0 0.5vw; /* Space around the input fields */
+    margin: 0 0.5vw;
     height: 2vw;
-    width: 8vw; /* Input width relative to viewport width */
-    font-size: 1.5vw; /* Font size relative to viewport width */
+    width: 8vw;
+    font-size: 1.5vw;
     text-align: center;
 }
 
 .separator {
-    margin: 0 2vw; /* Space around the separator */
-    font-size: 2vw; /* Font size relative to viewport width */
+    margin: 0 2vw;
+    font-size: 2vw;
 }

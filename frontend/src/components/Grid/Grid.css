@@ -1,13 +1,9 @@
-/* DynamicGrid.css */
-
-
-
 .grid-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 40vw; /* Updated width of the grid container */
-    height: 40vw; /* Updated height of the grid container */
+    width: 100%;
+    height: 100%;
     border: 1px solid black;
     overflow: hidden;
     position: relative;
