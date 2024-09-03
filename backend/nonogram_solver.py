@@ -9,6 +9,10 @@ class Nonogram:
         self.num_cols = cols
         self.row_len = self.num_cols
         self.col_len = self.num_rows
+        self.row_vals = row_vals
+        self.col_vals = col_vals
+        # Set to true if the puzzle is impossible to solve
+        self.impossible = False
         # holds lists containing all the possibilities for each row and column, with each index representing each row/col number
         self.row_possibilities = []
         self.col_possibilities = []
@@ -28,19 +32,19 @@ class Nonogram:
         self.col_changes = [set() for _ in range(self.num_cols)]
         self.row_solved = [False for _ in range(self.num_rows)]
         self.col_solved = [False for _ in range(self.num_cols)]
-        # Set to true if the puzzle is impossible to solve
-        self.impossible = False
         self.board_change = []
         self.board_change.append(self.board)
         self.solve_board()
+        self.check_board()
 
     # solves the board
     def solve_board(self):
+        if self.impossible:
+            return
         heap = []
         for i in range(self.num_rows):
             indexes = self.find_common_indexes(i, True)
             for idx, type in indexes:
-                self.remove_possibilities(i, True, idx, type)
                 self.row_changes[i].add((idx, type))
             if len(self.row_possibilities[i]) == 1 and not self.row_solved[i]:
                 self.solves_needed -= 1
@@ -52,7 +56,6 @@ class Nonogram:
         for i in range(self.num_cols):
             indexes = self.find_common_indexes(i, False)
             for idx, type in indexes:
-                self.remove_possibilities(i, False, idx, type)
                 self.col_changes[i].add((idx, type))
             if len(self.col_possibilities[i]) == 1 and not self.col_solved[i]:
                 self.solves_needed -= 1
@@ -154,6 +157,58 @@ class Nonogram:
                     self.solves_needed -= 1
                     self.col_solved[idx] = True
 
+    def check_board(self) -> None:
+        if self.impossible:
+            return
+        for i, curr_row_real in enumerate(self.row_vals):
+            if len(self.row_possibilities[i]) != 1:
+                self.impossible = True
+                return
+            curr_row = self.row_possibilities[i][0]
+            curr_vals = []
+            count = 0
+            print(curr_row)
+            for val in curr_row:
+                if val == 1:
+                    count += 1
+                if val == -1 and count != 0:
+                    curr_vals.append(count)
+                    count = 0
+            if count != 0:
+                curr_vals.append(count)
+            print(curr_vals)
+            if curr_row_real != curr_vals:
+                self.impossible = True
+                return
+        for i, curr_col_real in enumerate(self.col_vals):
+            if len(self.col_possibilities[i]) != 1:
+                self.impossible = True
+                return
+            curr_col = self.col_possibilities[i][0]
+            curr_vals = []
+            count = 0
+            for val in curr_col:
+                if val == 1:
+                    count += 1
+                if val == -1 and count != 0:
+                    curr_vals.append(count)
+                    count = 0
+            if count != 0:
+                curr_vals.append(count)
+            if curr_col_real != curr_vals:
+                self.impossible = True
+                return
+
+        row_mtrx = []
+        for row in self.row_possibilities:
+            row_mtrx.append(row[0])
+
+        for c, col in enumerate(self.col_possibilities):
+            for r, val in enumerate(col[0]):
+                if val != row_mtrx[r][c]:
+                    self.impossible = True
+                    return
+
     # returns either the solved board in a 2x2 array, or None if the board is unsolvable
     def get_board(self) -> Optional[list]:
         if self.impossible:
@@ -162,7 +217,7 @@ class Nonogram:
         for r in self.row_possibilities:
             if len(r) != 1:
                 return None
-            res.append(r)
+            res.append(r[0])
         return res
 
     # helper function to generate every possible position for a given value list
@@ -171,7 +226,7 @@ class Nonogram:
         size = self.row_len if row else self.col_len
 
         def generate_possibility(vals: list, size: int, curr: list):
-            if not vals:
+            if not vals or 0 in vals:
                 while len(curr) < size:
                     curr.append(-1)
                 res.append(curr.copy())

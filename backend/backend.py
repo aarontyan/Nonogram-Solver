@@ -9,6 +9,7 @@ CORS(app)
 @app.route("/solve-nonogram", methods=["POST"])
 def solve_nonogram():
     data = request.get_json()
+    print(data)
     rows = data["rows"]
     cols = data["cols"]
     row_data = list(data["row_data"])
@@ -19,7 +20,7 @@ def solve_nonogram():
         return make_response(jsonify({"solution": solution}), 200)
     else:
         return make_response(
-            jsonify({"solution": "Has multiple solutions or has no solution"}), 400
+            jsonify({"solution": None}), 400
         )
 
 
