@@ -1,22 +1,27 @@
-import React, {useState} from 'react'
-import './errorCard.css'
+import React from 'react';
+import './errorCard.css';
 
 interface ErrorCardProps {
+    showCard: boolean;
     onClose: () => void;
 }
 
-const ErrorCard: React.FC<ErrorCardProps> = ({ onClose }) => {
+const ErrorCard: React.FC<ErrorCardProps> = ({ showCard, onClose }) => {
+    if (!showCard) {
+        return null;
+    }
     return (
         <div className="error-overlay">
             <div className="error-card">
-                <button className="error-close-button" onClick={onClose}>X</button>
-                <h2>Default Title</h2>
-                <div className="error-content">
-                    <p>This is the default content of the popup card.</p>
+                <div className="error-card-header">
+                    <button className="close-button" onClick={onClose}>X</button>
+                </div>
+                <div className="error-card-body">
+                    <p>{"Error calculating answer. Please ensure that all inputs are numbers separated by commas, and check that the inputs lead to a valid solution (no solution or multiple solutions may cause an error)"}</p>
                 </div>
             </div>
         </div>
     );
-}
+};
 
 export default ErrorCard;

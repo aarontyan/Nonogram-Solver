@@ -1,5 +1,3 @@
-// onBoardUpdate: (newBoard: Array<Array<number>>) => void;
-
 import React, { useState } from 'react';
 import './submitButton.css';
 
@@ -37,18 +35,13 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({
                 }),
             });
 
-            if (!response.ok) {
-                throw new Error("Solution could not be found.");
-            }
-
             const data = await response.json();
 
             if (data.solution === null) {
-                alert("No solution found for the provided input.");
-                onBoardUpdate(null); // Clear the board or do nothing
-                onHasSolutionUpdate(false)
+                onBoardUpdate(null);
+                onHasSolutionUpdate(false);
             } else {
-                onBoardUpdate(data.solution); // Update the board with the solution
+                onBoardUpdate(data.solution);
                 onHasSolutionUpdate(true)
             }
 
@@ -57,6 +50,8 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({
             setError("An error occurred while processing the input.");
         }
     };
+
+    
 
     const handleSubmit = () => {
         const parsedRows = rowValues.map(val =>
