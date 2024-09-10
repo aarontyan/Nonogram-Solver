@@ -1,0 +1,14 @@
+version: 0.0
+os: linux
+files:
+  - source: /frontend/build
+    destination: /var/www/html/frontend
+  - source: /backend
+    destination: /home/ec2-user/backend
+hooks:
+  AfterInstall:
+    - location: scripts/install_dependencies.sh
+      timeout: 300
+  ApplicationStart:
+    - location: scripts/start_server.sh
+      timeout: 300

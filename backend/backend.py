@@ -6,7 +6,7 @@ app = Flask(__name__)
 CORS(app)
 
 
-@app.route("/solve-nonogram", methods=["POST"])
+@app.route("/api/solve-nonogram", methods=["POST"])
 def solve_nonogram():
     data = request.get_json()
     print(data)

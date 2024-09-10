@@ -22,7 +22,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({
 
     const sendInfoToBackend = async (numRows: number, numCols: number, rowValues: number[][], colValues: number[][]) => {
         try {
-            const response = await fetch("http://localhost:5000/solve-nonogram", {
+            const response = await fetch("http://localhost:5000/api/solve-nonogram", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
